@@ -15,6 +15,8 @@ with open(csv_file, "r") as file:
     header = next(csvreader)
     # intialize variables
     voter_count = 0
+    winner = 0
+    # intialize candidates dictionary
     candidates = {}
 
     # loop through rows
@@ -24,5 +26,15 @@ with open(csv_file, "r") as file:
             candidates[row[2]] = 1
         else:
             candidates[row[2]] += 1
-    print(voter_count)
-    print(candidates)
+    print("Election Results")
+    print("---------------------------")
+    print(f"Total Votes: {voter_count}")
+    print("---------------------------")
+    for key in candidates:
+        value = candidates.get(key)
+        percent = round(int(value)/voter_count * 100,3)
+        print(f"{key}: {percent}% ({value})")
+
+    print("---------------------------")
+    print(f"Winner: {winner}")
+    print("---------------------------")
