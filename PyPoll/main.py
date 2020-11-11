@@ -15,7 +15,7 @@ with open(csv_file, "r") as file:
     header = next(csvreader)
     # intialize variables
     voter_count = 0
-    winner = 0
+
     # intialize candidates dictionary
     candidates = {}
 
@@ -26,15 +26,35 @@ with open(csv_file, "r") as file:
             candidates[row[2]] = 1
         else:
             candidates[row[2]] += 1
+    # find max value in cadidates dictionary and candidate winner
+    winner_value = max(candidates.values())
+    # print voter_count results
     print("Election Results")
     print("---------------------------")
     print(f"Total Votes: {voter_count}")
     print("---------------------------")
+    with open(text_file,'w') as txtfile:
+        txtfile.writelines(["Election Results\n",
+                            "---------------------------\n",
+                            "Total Votes: " + str(voter_count) + "\n",
+                            "---------------------------\n"])
+    # iterate through dictionary and print out person and percent of votes
     for key in candidates:
         value = candidates.get(key)
-        percent = round(int(value)/voter_count * 100,3)
-        print(f"{key}: {percent}% ({value})")
-
+        decimal = int(value)/voter_count
+        percent = "{:.3%}".format(decimal)
+        with open(text_file,'a') as txtfile:
+            txtfile.writelines(str(key) + ": " + str(percent) + " (" + str(value) + ")\n")
+        print(f"{key}: {percent} ({value})")
+        if winner_value == candidates.get(key):
+            winner = key
+    # print out winner
     print("---------------------------")
     print(f"Winner: {winner}")
     print("---------------------------")
+    
+    # write to text file
+    with open(text_file,'a') as txtfile:
+        txtfile.writelines(["---------------------------\n",
+                            "Winner: " + winner + "\n",
+                            "---------------------------\n"])
